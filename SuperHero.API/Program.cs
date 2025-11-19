@@ -1,9 +1,13 @@
 using SuperHero.API.DBContext;
 using Microsoft.EntityFrameworkCore;
+using SuperHero.API.Repositories.SuperHeroRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//register repository dependencies
+builder.Services.AddScoped<ISuperHeroRepository, SuperHeroRepository>();
 
 //Add Database Context
 builder.Services.AddDbContext<AppDbContext>(options =>
