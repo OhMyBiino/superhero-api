@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SuperHero.API.DBContext;
 using SuperHero.API.Models;
 
@@ -34,13 +36,16 @@ namespace SuperHero.API.Repositories.SuperHeroRepo
         {
             var addedEntity = await _context.SuperHeroModels.AddAsync(model);
 
+            await _context.SaveChangesAsync();
+
             return addedEntity.Entity;
         }
 
-        public async Task<SuperHeroModel> Update(SuperHeroModel latestModel) 
+        public async Task<SuperHeroModel> Update(int Id, SuperHeroModel latestModel) 
         {
+
             var existingModel = await _context.SuperHeroModels
-                .FirstOrDefaultAsync(s => s.Id == latestModel.Id);
+                .FirstOrDefaultAsync(s => s.Id == Id);
 
             if (existingModel is not null)
             {
