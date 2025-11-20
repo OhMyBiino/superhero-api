@@ -23,22 +23,49 @@ namespace SuperHero.API.Repositories.SuperHeroRepo
         //get superhero by id
         public async Task<SuperHeroModel> GetById(int Id) 
         {
-            throw new NotImplementedException();
+            var superHero = await _context.SuperHeroModels
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == Id);
+
+            return superHero;
         }
 
         public async Task<SuperHeroModel> Add(SuperHeroModel model) 
         {
-            throw new NotImplementedException();
+            var addedEntity = await _context.SuperHeroModels.AddAsync(model);
+
+            return addedEntity.Entity;
         }
 
         public async Task<SuperHeroModel> Update(SuperHeroModel latestModel) 
         {
-            throw new NotImplementedException();
+            var existingModel = await _context.SuperHeroModels
+                .FirstOrDefaultAsync(s => s.Id == latestModel.Id);
+
+            if (existingModel is not null)
+            {
+                existingModel.Name = latestModel.Name;
+                existingModel.FirstName = latestModel.FirstName;
+                existingModel.LastName = latestModel.LastName;
+                existingModel.Location = latestModel.Location;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return existingModel;
         }
 
         public async Task<SuperHeroModel> Delete(int Id) 
         {
-            throw new NotImplementedException();
+            var existingModel = await _context.SuperHeroModels.FindAsync(Id);
+
+            if (existingModel is not null) 
+            {
+                _context.SuperHeroModels.Remove(existingModel);
+                await _context.SaveChangesAsync();
+            }
+
+            return existingModel;
         }
     }
 }
