@@ -53,5 +53,45 @@ namespace SuperHero.API.Controllers
 
             return Ok(superHeroes);
         }
+
+
+        [HttpGet("{Id:int}")]
+        public async Task<ActionResult<SuperHeroModel>> GetSuperHeroById(int Id)
+        {
+            var superHero = await _superHeroRepository.GetById(Id);
+
+            if (superHero is null) return NotFound($"Superhero with Id: {Id} could not be found");
+
+            return Ok(superHero);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<SuperHeroModel>> AddSuperHero(SuperHeroModel model) 
+        {
+            var addedSuperHero = await _superHeroRepository.Add(model);
+
+            return Ok(addedSuperHero);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<SuperHeroModel>> UpdateSuperHero(SuperHeroModel model) 
+        {
+            var updatedSuperHero = await _superHeroRepository.Update(model.Id, model);
+
+            if (updatedSuperHero is null) return BadRequest($"SuperHero with Id {model.Id} could not be updated");
+
+            return Ok(updatedSuperHero);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<SuperHeroModel>> DleteSuperHero(int Id) 
+        {
+            var deletedSuperHero = await _superHeroRepository.Delete(Id);
+
+            if(deletedSuperHero is null) return NotFound($"SuperHero with Id {Id} could not be found for deletion");
+
+            return Ok(deletedSuperHero);
+        }
     }
 }
