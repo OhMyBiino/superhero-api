@@ -67,19 +67,23 @@ namespace SuperHero.API.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<SuperHeroModel>> AddSuperHero(SuperHeroModel model) 
+        public async Task<ActionResult<SuperHeroModel>> AddSuperHero(SuperHeroModel model)
         {
             var addedSuperHero = await _superHeroRepository.Add(model);
 
             return Ok(addedSuperHero);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<SuperHeroModel>> UpdateSuperHero(SuperHeroModel model) 
+        [HttpPut("{Id:int}")]
+        public async Task<ActionResult<SuperHeroModel>> UpdateSuperHero(int Id, SuperHeroModel model) 
         {
-            var updatedSuperHero = await _superHeroRepository.Update(model.Id, model);
+            var matchedModel = await _superHeroRepository.GetById(Id);
 
-            if (updatedSuperHero is null) return BadRequest($"SuperHero with Id {model.Id} could not be updated");
+            if (matchedModel is null) return BadRequest("Id does not match.");
+
+            var updatedSuperHero = await _superHeroRepository.Update(Id, model);
+
+            if (updatedSuperHero is null) return BadRequest($"SuperHero with Id {Id} could not be updated");
 
             return Ok(updatedSuperHero);
         }
