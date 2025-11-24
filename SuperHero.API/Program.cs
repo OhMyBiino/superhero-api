@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AngularPolicy");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
