@@ -30,6 +30,7 @@ namespace SuperHero.API.Repositories.SuperHeroRepo
             return superHero;
         }
 
+        //add superhero
         public async Task<SuperHeroModel> Add(SuperHeroModel model) 
         {
             var addedEntity = await _context.SuperHeroModels.AddAsync(model);
@@ -39,6 +40,7 @@ namespace SuperHero.API.Repositories.SuperHeroRepo
             return addedEntity.Entity;
         }
 
+        //update superhero
         public async Task<SuperHeroModel> Update(int Id, SuperHeroModel latestModel) 
         {
 
@@ -58,6 +60,7 @@ namespace SuperHero.API.Repositories.SuperHeroRepo
             return existingModel;
         }
 
+        //delete superhero
         public async Task<SuperHeroModel> Delete(int Id) 
         {
             var existingModel = await _context.SuperHeroModels.FindAsync(Id);
